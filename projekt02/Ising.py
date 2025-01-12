@@ -5,6 +5,7 @@ import os
 from tqdm import tqdm
 import shutil
 
+
 class Ising:
     def __init__(self, n, J, beta, B, step_number, rho, pictures=None, animate=None, magnetisation=None):
         self.n = n
@@ -76,7 +77,7 @@ class Ising:
 
         image.save(filename)
 
-    def create_animation(self, duration=100, loop=0):
+    def create_animation(self, duration=500, loop=0):
         images = [Image.open(filename) for filename in self.image_filenames]
         images[0].save(self.animate, save_all=True, append_images=images[1:], duration=duration, loop=loop)
 
@@ -88,19 +89,19 @@ class Ising:
                 grid = self.change_one_spin()
                 if self.magnetisation:
                     self.calculate_magnetisation()
-                if self.pictures:
-                    if not os.path.exists(self.pictures):
-                        os.makedirs(self.pictures)
-                    image_filename = f'{self.pictures}/grid_image{macrostep}_{step}.png'
-                    self.grid_to_image(filename=image_filename)
-                    self.image_filenames.append(image_filename)
+            if self.pictures:
+                if not os.path.exists(self.pictures):
+                    os.makedirs(self.pictures)
+                image_filename = f'{self.pictures}/grid_image{macrostep}.png'
+                self.grid_to_image(filename=image_filename)
+                self.image_filenames.append(image_filename)
 
-                if self.animate and not self.pictures:
-                    if not os.path.exists(pictures_tmp):
-                        os.makedirs(pictures_tmp)
-                    image_filename = f'pics/grid_image{macrostep}_{step}.png'
-                    self.grid_to_image(filename=image_filename)
-                    self.image_filenames.append(image_filename)
+            if self.animate and not self.pictures:
+                if not os.path.exists(pictures_tmp):
+                    os.makedirs(pictures_tmp)
+                image_filename = f'pics/grid_image{macrostep}.png'
+                self.grid_to_image(filename=image_filename)
+                self.image_filenames.append(image_filename)
 
         if self.animate and self.pictures:
             self.create_animation()
@@ -110,3 +111,5 @@ class Ising:
             for filename in self.image_filenames:
                 os.remove(filename)
             shutil.rmtree(pictures_tmp)
+
+# optymalniej liczyc energie oraz robic animacje co makro, a nie mikro krok
