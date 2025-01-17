@@ -18,11 +18,11 @@ def SIR_model(y, t, beta, gamma, N):
     return dSdt, dIdt, dRdt
 
 
-beta = 0.6  # wsp zakazenia
-gamma = 0.1  # wsp zdrowienia
+beta = 0.2 # wsp zakazenia
+gamma = 0.6  # wsp zdrowienia
 N = 100 # ile ludzi
-I0 = 13  # ile na poczatku chorych
-R0 = 5  # ile na poczarku removed
+I0 = 10  # ile na poczatku chorych
+R0 = 1  # ile na poczarku removed
 S0 = N - I0 - R0
 t_max = 100 # ile dni
 dt = 1 # krok czasowy 1 dzien
@@ -38,5 +38,6 @@ plt.plot(t_range, result[:, 2], label='R(t)')  # removed
 plt.legend(loc='best')
 plt.xlabel('t(dni)')
 plt.ylabel('ilość ludzi')
-plt.title('model SIR')
+plt.title(f'model SIR: $\\beta=${beta}, $\\gamma$={gamma}, N={N}, I$_0$={I0}, R$_0$={R0}')
+plt.savefig('4.png')
 plt.show()
