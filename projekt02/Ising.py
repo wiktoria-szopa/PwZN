@@ -4,6 +4,7 @@ from PIL import Image
 import os
 from tqdm import tqdm
 import shutil
+import time
 
 
 class Ising:
@@ -84,6 +85,7 @@ class Ising:
     def simulate(self):
         grid = self.generate_grid()
         pictures_tmp = 'pics'
+        s = time.time()
         for macrostep in tqdm(range(self.step_number)):
             for step in range(self.n ** 2):
                 grid = self.change_one_spin()
@@ -111,5 +113,6 @@ class Ising:
             for filename in self.image_filenames:
                 os.remove(filename)
             shutil.rmtree(pictures_tmp)
+        print('czas petli: ',time.time()-s)
 
 # optymalniej liczyc energie oraz robic animacje co makro, a nie mikro krok

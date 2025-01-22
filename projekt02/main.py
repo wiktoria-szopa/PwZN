@@ -1,5 +1,6 @@
 from Ising import Ising
 import argparse
+import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument('n', type=int, help='rozmiar boków siatki')
@@ -16,6 +17,9 @@ parser.add_argument('--magnetisation', '-m', help='nazwa pliku z magnetyzacją')
 args = parser.parse_args()
 
 tmp = Ising(args.n, args.J, args.beta, args.B, args.step_number, args.rho, args.pictures, args.animate, args.magnetisation)
+t_start = time.time()
 tmp.simulate()
+t_end = time.time()
+print(f'Czas wykonania: {t_end - t_start} s')
 
 # python projekt02/main.py 20 1 1 1 4 0.5 -p projekt02/pics -a projekt02/animate.gif -m projekt02/magnetisation.txt

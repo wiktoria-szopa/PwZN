@@ -5,6 +5,7 @@ from PIL import Image
 import os
 from tqdm import tqdm
 import numba
+import time
 
 @numba.njit
 def generate_grid(n, rho):
@@ -80,6 +81,7 @@ def simulate(n, J, beta, B, step_number, rho, pictures=None, animate=None, magne
     grid = generate_grid(n, rho)
     pictures_tmp = 'pics'
     image_filenames = []
+    s = time.time()
     for macrostep in tqdm(range(step_number)):
         for step in range(n ** 2):
             grid = change_one_spin(n, grid, J, B, beta)
@@ -89,14 +91,14 @@ def simulate(n, J, beta, B, step_number, rho, pictures=None, animate=None, magne
         if pictures:
             if not os.path.exists(pictures):
                 os.makedirs(pictures)
-            image_filename = f'{pictures}/grid_image{macrostep}_{step}.png'
+            image_filename = f'{pictures}/grid_image{macrostep}.png'
             grid_to_image(grid, filename=image_filename)
             image_filenames.append(image_filename)
 
         if animate and not pictures:
             if not os.path.exists(pictures_tmp):
                 os.makedirs(pictures_tmp)
-            image_filename = f'pics/grid_image{macrostep}_{step}.png'
+            image_filename = f'pics/grid_image{macrostep}.png'
             grid_to_image(grid, filename=image_filename)
             image_filenames.append(image_filename)
 
@@ -108,5 +110,18 @@ def simulate(n, J, beta, B, step_number, rho, pictures=None, animate=None, magne
         for filename in image_filenames:
             os.remove(filename)
         os.rmdir(pictures_tmp)
+    print('czas petli: ',time.time()-s)
 
-simulate(20, 1, 1, 1, 10, 0.01, animate='animation.gif', magnetisation='magnetisation.txt')
+start_time = time.time()
+simulate(20, 1, 1, 1, 4, 0.5, animate='animation.gif', magnetisation='magnetisation.txt')
+end_time = time.time()
+
+print(f'Czas wykonania: {end_time - start_time} s')
+# bez numby ~8s
+# z numba ~5s, gdyby było więcej kroków to różnica byłaby większa, sama petla jest giga szybka
+
+# czas petli z numba 2.7s, bez to te okolo 7s, w tym projekcie jeszcze sie chyba wczytuje wszystko itp
+
+
+
+
