@@ -1,5 +1,4 @@
 import json
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -34,12 +33,12 @@ with open(save_path, 'w') as file:
     json.dump(info, file)
 
 zamknij_button = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                                                '#modal_40 > div > div > div.card.modal-body.border-0.mb-0.d-flex.d-xl-none > div > div > div > div.col-12.col-md-12.mt-2 > button')))
+                                                                           '#modal_40 > div > div > div.card.modal-body.border-0.mb-0.d-flex.d-xl-none > div > div > div > div.col-12.col-md-12.mt-2 > button')))
 zamknij_button.click()
 
 for _ in range(100):
     driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
     time.sleep(1)
 
-time.sleep(5)
+time.sleep(50000)
 driver.close()
